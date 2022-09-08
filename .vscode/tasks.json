@@ -1,0 +1,34 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "cppbuild",
+			"label": "C/C++: g++.exe générer le fichier actif",
+			"command": "C:/msys64/mingw64/bin/g++.exe",
+			"args": [
+				"-fdiagnostics-color=always",
+				"-I",
+				"${workspaceFolder}\\OGL3D\\include",
+				"-g",
+				"${workspaceFolder}\\Game\\main.cpp",
+				"${workspaceFolder}\\OGL3D\\src\\OGame.cpp",
+				"${workspaceFolder}\\OGL3D\\src\\OWindow.cpp",
+				"${workspaceFolder}\\OGL3D\\src\\OGraphicsEngine.cpp",
+				"${workspaceFolder}\\OGL3D\\src\\glad_wgl.c",
+				"${workspaceFolder}\\OGL3D\\src\\glad.c",
+				"-lopengl32",
+				"-lgdi32",
+				"-o",
+				"${workspaceFolder}\\Game\\main.exe"
+			],
+			"options": {
+				"cwd": "C:/msys64/mingw64/bin"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "build",
+			"detail": "compilateur: C:/msys64/mingw64/bin/g++.exe"
+		}
+	]
+}
