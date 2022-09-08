@@ -1,0 +1,1 @@
+g++ -o main Game/main.cpp OGL3D/src/OGL3D/Game/OGame.cpp OGL3D/src/OGL3D/Window/OWindow.cpp
