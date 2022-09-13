@@ -1,5 +1,6 @@
 #include "OGraphicsEngine.h"
 #include "OVertexArrayObject.h"
+#include "OShaderProgram.h"
 #include "glad_wgl.h"
 #include "glad.h"
 #include <assert.h>
@@ -59,9 +60,14 @@ OGraphicsEngine::~OGraphicsEngine()
 {
 }
 
-OVertexArrayObjectPtr OGraphicsEngine::createVertexArrayObject(const OVertexBufferData& data)
+OVertexArrayObjectPtr OGraphicsEngine::createVertexArrayObject(const OVertexBufferDesc& data)
 {
     return std::make_shared<OVertexArrayObject>(data);
+}
+
+OShaderProgramPtr OGraphicsEngine::createShaderProgram(const OShaderProgramDesc& desc)
+{
+    return std::make_shared<OShaderProgram>(desc);
 }
 
 void OGraphicsEngine::clear(const OVec4& color)
@@ -78,6 +84,11 @@ void OGraphicsEngine::setViewport(const ORect& size)
 void OGraphicsEngine::setVertexArrayObject(const OVertexArrayObjectPtr& vao)
 {
     glBindVertexArray(vao->getId());
+}
+
+void OGraphicsEngine::setShaderProgram(const OShaderProgramPtr& program)
+{
+    glUseProgram(program->getId());
 }
 
 void OGraphicsEngine::drawTriangles(ui32 vertexCount, ui32 offset)

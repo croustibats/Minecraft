@@ -1,18 +1,29 @@
+#include "Oprerequisites.h"
 #include "OVertexArrayObject.h"
 #include "glad.h"
 
-OVertexArrayObject :: OVertexArrayObject(const OVertexBufferData& data)
+OVertexArrayObject :: OVertexArrayObject(const OVertexBufferDesc& data)
 {
-    glGenBuffers(1, &m_vertexBufferId);
-
     glGenVertexArrays(1, &m_vertexArrayObjectId);
     glBindVertexArray(m_vertexArrayObjectId);
 
+    glGenBuffers(1, &m_vertexBufferId);
     glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferId);
     glBufferData(GL_ARRAY_BUFFER, data.vertexSize * data.listSize, data.verticesList, GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, data.vertexSize, 0);
-    glEnableVertexAttribArray(0);
+    for (ui32 i = 0; i < data.attributesListSize; i++)
+    {
+        glVertexAttribPointer(
+            i,
+            data.attributesList[i].numElements,
+            GL_FLOAT,
+            GL_FALSE,
+            data.vertexSize,
+            (void*)((i==0)?0: data.attributesList[i-1].numElements* sizeof(f32))
+        );
+    
+        glEnableVertexAttribArray(i);
+    }
 
     glBindVertexArray(0);
 

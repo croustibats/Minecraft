@@ -3,6 +3,7 @@
 #include "OGraphicsEngine.h"
 #include "OVertexArrayObject.h"
 #include <Windows.h>
+#include <tchar.h>
 
 
 OGame::OGame()
@@ -22,20 +23,47 @@ OGame::~OGame()
 void OGame::onCreate()
 {
     const f32 triangleVertices[] = {
-        -0.5f, -0.5f, 0.0f,
-        0.5f, -0.7f, 0.0f,
-        0.0f, 0.5f, 0.0f
+        -0.5f,-0.5f,0.0f,
+        0    ,1    ,0   ,
+
+        0.5f, -0.5f, 0.0f,
+        0    ,0    ,1   ,
+
+        0.0f, 0.5f, 0.0f,
+        1    ,0    ,0   ,
     };
 
-    m_triangleVAO = m_graphicsEngine->createVertexArrayObject({(void*)triangleVertices, sizeof(f32)*3, 3});
+    OVertextAttribute attribsList[] = {
+        3,//position
+        3//color
+    };
+
+    m_triangleVAO = m_graphicsEngine->createVertexArrayObject(
+        {
+            (void*)triangleVertices,
+            sizeof(f32)*(3+3),
+            3,
+
+
+            attribsList,
+            2
+        });
+
+    m_shader = m_graphicsEngine->createShaderProgram(
+        {
+            L"C:\\Users\\Baptiste Cournault\\Documents\\dev\\Minecraft\\OGL3D\\src\\BasicShader.vert",
+            L"C:\\Users\\Baptiste Cournault\\Documents\\dev\\Minecraft\\OGL3D\\src\\BasicShader.frag"
+        });
 
 }
 void OGame::onUpdate()
 {
 
-    m_graphicsEngine->clear(OVec4(0, 127, 0, 1));
+    m_graphicsEngine->clear(OVec4(0, 0, 0, 1));
 
     m_graphicsEngine->setVertexArrayObject(m_triangleVAO);
+
+    m_graphicsEngine->setShaderProgram(m_shader);
 
     m_graphicsEngine->drawTriangles(m_triangleVAO->getVertexBufferSize(), 0);
 
