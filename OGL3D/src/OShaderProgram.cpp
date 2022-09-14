@@ -26,6 +26,12 @@ ui32 OShaderProgram::getId()
     return m_programId;
 }
 
+void OShaderProgram::setUniformBufferSlot(const char* name, ui32 slot)
+{
+    ui32 index = glGetUniformBlockIndex(m_programId, name);
+    glUniformBlockBinding(m_programId, index, slot);
+}
+
 void OShaderProgram::attach(const wchar_t* shaderFilePath, const OShaderType& type)
 {
     std::string shaderCode;
@@ -53,7 +59,7 @@ void OShaderProgram::attach(const wchar_t* shaderFilePath, const OShaderType& ty
     glCompileShader(shaderId);
 
     glAttachShader(m_programId, shaderId);
-    m_attachedShaders[type] = shaderId;
+    m_attachedShaders[(ui32)type] = shaderId;
 }
 
 void OShaderProgram::link()

@@ -1,18 +1,22 @@
 #version 410 core
 
-layout(location=0) in vec3 position;
-layout(location=1) in vec3 color;
+layout (row_major) uniform UniformData
+{
+    mat4 world;
+    mat4 projection;
+};
 
-layout(location=0) out vec3 outColor;
+
+layout(location=0) in vec3 position;
+layout(location=1) in vec2 texcoord;
+
+layout(location=0) out vec3 vertOutColor;
 
 void main()
 {
-    gl_Position.xyz = position;
+    vec4 pos = vec4(position, 1) * world;
+    pos = pos * projection;
 
-    /*if (gl_Position.y>0 && gl_Position.y<1)
-        gl_Position.x += 0.5;
-    */
-    gl_Position.w = 1.0;
-
-    outColor = color;
+    gl_Position = pos;
+    vertOutColor = vec3(texcoord.x, texcoord.y, 0);
 }

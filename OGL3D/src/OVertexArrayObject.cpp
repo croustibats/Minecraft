@@ -2,24 +2,24 @@
 #include "OVertexArrayObject.h"
 #include "glad.h"
 
-OVertexArrayObject :: OVertexArrayObject(const OVertexBufferDesc& data)
+OVertexArrayObject :: OVertexArrayObject(const OVertexBufferDesc& vbDesc)
 {
     glGenVertexArrays(1, &m_vertexArrayObjectId);
     glBindVertexArray(m_vertexArrayObjectId);
 
     glGenBuffers(1, &m_vertexBufferId);
     glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferId);
-    glBufferData(GL_ARRAY_BUFFER, data.vertexSize * data.listSize, data.verticesList, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, vbDesc.vertexSize * vbDesc.listSize, vbDesc.verticesList, GL_STATIC_DRAW);
 
-    for (ui32 i = 0; i < data.attributesListSize; i++)
+    for (ui32 i = 0; i < vbDesc.attributesListSize; i++)
     {
         glVertexAttribPointer(
             i,
-            data.attributesList[i].numElements,
+            vbDesc.attributesList[i].numElements,
             GL_FLOAT,
             GL_FALSE,
-            data.vertexSize,
-            (void*)((i==0)?0: data.attributesList[i-1].numElements* sizeof(f32))
+            vbDesc.vertexSize,
+            (void*)((i==0)?0: vbDesc.attributesList[i-1].numElements* sizeof(f32))
         );
     
         glEnableVertexAttribArray(i);
@@ -27,12 +27,24 @@ OVertexArrayObject :: OVertexArrayObject(const OVertexBufferDesc& data)
 
     glBindVertexArray(0);
 
-    m_vertexBufferData = data;
+    m_vertexBufferData = vbDesc;
 
+}
+
+OVertexArrayObject :: OVertexArrayObject(const OVertexBufferDesc& vbDesc, const OIndexBufferDesc& ibDesc):OVertexArrayObject(vbDesc)
+{
+    glBindVertexArray(m_vertexArrayObjectId);
+
+    glGenBuffers(1, &m_elementBufferId);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_elementBufferId);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, ibDesc.listSize, ibDesc.indicesList, GL_STATIC_DRAW);
+
+    glBindVertexArray(0);
 }
 
 OVertexArrayObject :: ~OVertexArrayObject()
 {
+    glDeleteBuffers(1, &m_elementBufferId);
     glDeleteBuffers(1, &m_vertexBufferId);
     glDeleteVertexArrays(1, &m_vertexArrayObjectId);
 }
