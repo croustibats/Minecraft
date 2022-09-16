@@ -14,7 +14,7 @@ public:
     virtual void onUpdate();
     virtual void onQuit();
     
-
+    void createTexture();
 
     void run();
     void quit();
@@ -24,6 +24,7 @@ protected:
     std::unique_ptr<OGraphicsEngine> m_graphicsEngine;
     std::unique_ptr<OWindow> m_display;
 
+    OTexturePtr m_texture;
     OVertexArrayObjectPtr m_polygonVAO;
     OUniformBufferPtr m_uniform;
     OShaderProgramPtr m_shader;

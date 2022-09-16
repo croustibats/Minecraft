@@ -2,11 +2,14 @@
 #include "OVertexArrayObject.h"
 #include "OShaderProgram.h"
 #include "OUniformBuffer.h"
+#include "OTexture.h"
+#include "stb_image.h"
 #include "glad_wgl.h"
 #include "glad.h"
 #include <assert.h>
 #include <tchar.h>
 #include <stdexcept>
+#include <iostream>
 
 OGraphicsEngine::OGraphicsEngine()
 {
@@ -59,6 +62,11 @@ OGraphicsEngine::OGraphicsEngine()
 
 OGraphicsEngine::~OGraphicsEngine()
 {
+}
+
+OTexturePtr OGraphicsEngine::createTexture(GLenum textureTarget, const std::string& fileName)
+{
+    return std::make_shared<OTexture>(textureTarget, fileName);
 }
 
 OVertexArrayObjectPtr OGraphicsEngine::createVertexArrayObject(const OVertexBufferDesc& vbDesc)
@@ -154,4 +162,12 @@ void OGraphicsEngine::drawIndexedTriangles(const OTriangleType& triangleType, ui
     }
 
     glDrawElements(glTriType, indicesCount, GL_UNSIGNED_INT, nullptr);
+}
+
+//Texture
+
+void OGraphicsEngine::bindTexture(const OTexturePtr& tex, GLenum textureUnit)
+{   
+    glActiveTexture(textureUnit);
+    glBindTexture(tex->getTarget(), tex->getObj());
 }

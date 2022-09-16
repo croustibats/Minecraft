@@ -1,11 +1,12 @@
 #version 410 core
 
-layout(location = 0) in vec3 vertOutColor;
+layout(location = 0) out vec4 FragColor;
 
-layout(location = 0) out vec4 outColor;
+in vec2 texcoord0;
+
+uniform sampler2D gSampler;
 
 void main()
 {
-    outColor = vec4(1,1,1,1);
-    outColor.rgb = vertOutColor;
+    FragColor = texture(gSampler, texcoord0);
 }

@@ -4,12 +4,17 @@
 #include "OVertexArrayObject.h"
 #include "OShaderProgram.h"
 #include "OUniformBuffer.h"
+#include "OTexture.h"
 #include "OMat4.h"
 #include "OVec3.h"
 #include "OVec2.h"
+#include "glad_wgl.h"
+#include "glad.h"
+#include "stb_image.h"
 #include <Windows.h>
 #include <tchar.h>
 #include <math.h>
+#include <iostream>
 
 struct UniformData
 {
@@ -39,6 +44,7 @@ OGame::~OGame()
 
 void OGame::onCreate()
 {
+
     OVec3 positionsList[] = 
     {   
         //front face
@@ -57,11 +63,12 @@ void OGame::onCreate()
 
     OVec2 texcoordsList[] = 
     {
-        OVec2(0,0),
-        OVec2(0,1),
-        OVec2(1,0),
-        OVec2(1,1)
+        OVec2(0.0f,0.0f), // bottom left
+        OVec2(0.0f,1.0f), // top left
+        OVec2(1.0f,0.0f), // bottom right
+        OVec2(1.0f,1.0f) // top right
     };
+
 
     Vertex verticesList[] = 
     {
@@ -178,9 +185,18 @@ void OGame::onCreate()
     
     m_shader->setUniformBufferSlot("UniformData", 0);
 
+    //Texture
+    m_texture = m_graphicsEngine->createTexture(GL_TEXTURE_2D, "C:\\Users\\Baptiste Cournault\\Documents\\dev\\Minecraft\\pop_cat.png");
+
 }
 void OGame::onUpdate()
 {
+    //Texture 
+    //ui32 gSamplerLocation;
+    //m_texture->bindTexture(GL_TEXTURE0);
+    //glUniform1i(gSamplerLocation, 0);
+    //m_graphicsEngine->bindTexture(m_texture, GL_TEXTURE0);
+
     //computing delta time
 
     auto currentTime = std::chrono::system_clock::now();
@@ -237,13 +253,19 @@ void OGame::onUpdate()
 
     m_graphicsEngine->setShaderProgram(m_shader);
 
+    m_graphicsEngine->bindTexture(m_texture, GL_TEXTURE0);
+    ui32 gSamplerLocation;
+    glUniform1i(gSamplerLocation, 0);
+
     //m_graphicsEngine->drawTriangles(TriangleStrip, m_polygonVAO->getVertexBufferSize(), 0);
     m_graphicsEngine->drawIndexedTriangles(TriangleList, 36);
+
 
     m_display->present(false);
 }
 void OGame::onQuit()
 {
+
 }
     
 

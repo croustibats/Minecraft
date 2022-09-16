@@ -5,7 +5,9 @@
 class OVertexArrayObject;
 class OUniformBuffer;
 class OShaderProgram;
+class OTexture;
 
+typedef std::shared_ptr<OTexture> OTexturePtr;
 typedef std::shared_ptr<OVertexArrayObject> OVertexArrayObjectPtr;
 typedef std::shared_ptr<OUniformBuffer> OUniformBufferPtr;
 typedef std::shared_ptr<OShaderProgram> OShaderProgramPtr;

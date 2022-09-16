@@ -10,13 +10,13 @@ layout (row_major) uniform UniformData
 layout(location=0) in vec3 position;
 layout(location=1) in vec2 texcoord;
 
-layout(location=0) out vec3 vertOutColor;
+out vec2 texcoord0;
 
 void main()
 {
     vec4 pos = vec4(position, 1) * world;
     pos = pos * projection;
-
     gl_Position = pos;
-    vertOutColor = vec3(texcoord.x, texcoord.y, 0);
+    
+    texcoord0 = texcoord;
 }
